@@ -1,60 +1,54 @@
-'use client'
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import Papa from 'papaparse';
-import BarcodeScannerComponent from 'react-qr-barcode-scanner';
+"use client";
+import Papa from "papaparse";
+import React, { useEffect, useState } from "react";
 
-class Book {
-  id: number = 0
-  barcode: number = 0
-  name: string = ""
+const TARGETURL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU5hdzkntwQGD8AbxGZ9bgfYIoep9GxVx3RXYyJS4QJYG6GX9NKXGQomZE5lY4Xny8JiKPG55mGcS2/pub?output=csv";
 
-  constructor(id: number, barcode: number, name: string) {
-    this.id = id;
-    this.barcode = barcode;
-    this.name = name;
-  }
+interface SheetType {
+  id: number | string;
+  barcode: string;
+  name: string;
 }
 
-const bookList: Array<Book> = []
-
-export default function Home() {
-  const targetUrl =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU5hdzkntwQGD8AbxGZ9bgfYIoep9GxVx3RXYyJS4QJYG6GX9NKXGQomZE5lY4Xny8JiKPG55mGcS2/pub?output=csv";
+export default function Sheet() {
+  const [data, setData] = useState<SheetType[]>([]);
   useEffect(() => {
-    Papa.parse(targetUrl, {
+    Papa.parse<SheetType>(TARGETURL, {
       download: true,
       header: true,
-      complete: (results: Papa.ParseResult<Book>) => {
-        results.data.forEach(function(item) {
-          bookList.push(item)
-        });
-        
-        console.log("bookList", bookList.length);
+      complete: (results) => {
+        setData(results.data);
+        console.log("results.data", results);
       },
     });
   }, []);
 
-  
-  const [data, setData] = useState("Not Found");
   return (
-    <main>
-      <div>
-      <BarcodeScannerComponent
-          width={500}
-          height={500}
-          onUpdate={(err, result) => {
-            if (result) {
-              setData(result.getText);
-              console.log("camera: ", result.getText);
-            } else {
-              setData("Not Found");
-            };
-          }}
-        />
-      </div>
-    </main>
+    <div>
+      <p>테스트</p>
+      {data ? (
+        <>
+          <ul>
+            {data.map((v, index) => {
+              return (
+                <React.Fragment key={index}>
+                  <li>{"id : " + v.id}</li>
+                  <li>{"barcode : " + v.barcode}</li>
+                  <li>{"name : " + v.name}</li>
+                </React.Fragment>
+              );
+            })}
+          </ul>
+        </>
+      ) : (
+        <div>
+          <p>불러오는중…</p>
+        </div>
+      )}
+    </div>
   );
+}
 
   // return (
   //   <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -165,4 +159,3 @@ export default function Home() {
   //     </div>
   //   </main>
   // )
-}
