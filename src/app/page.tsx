@@ -14,18 +14,7 @@ interface SheetType {
 }
 
 export default function Sheet() {
-  const [data, setData] = useState<SheetType[]>([]);
-  useEffect(() => {
-    Papa.parse<SheetType>(TARGETURL, {
-      download: true,
-      header: true,
-      complete: (results) => {
-        setData(results.data);
-        console.log("results.data", results);
-      },
-    });
-  }, []);
-
+  const [bookList, setBookData] = useState<SheetType[]>([]);
   
 const [localStream, setLocalStream] = useState<MediaStream>();
 const Camera = useRef<HTMLVideoElement>(null);
@@ -33,11 +22,24 @@ const hints = new Map();
 const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX, BarcodeFormat.CODE_128, BarcodeFormat.CODABAR, BarcodeFormat.EAN_13, BarcodeFormat.EAN_8, BarcodeFormat.CODE_39, BarcodeFormat.CODE_93];
 hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 const Scan = new BrowserMultiFormatReader(hints, 500);
+const [barcodeValue, setBarcodeValue] = useState('');
+const [bookName, setbookName] = useState('')
+
+useEffect(() => {
+  Papa.parse<SheetType>(TARGETURL, {
+    download: true,
+    header: true,
+    complete: (results) => {
+      setBookData(results.data);
+      console.log("results.data", results);
+    },
+  });
+}, []);
 
 useEffect(() => {
  navigator.mediaDevices.getUserMedia({
-  //  video: { facingMode: "user" }, //전면 카메라
-   video: { facingMode: { exact: "environment" } }, //후면 카메라
+   video: { facingMode: "user" }, //전면 카메라
+  //  video: { facingMode: { exact: "environment" } }, //후면 카메라
  })
    .then(stream => {
      console.log(stream);
@@ -51,6 +53,7 @@ useEffect(() => {
  if (!Camera.current)
    return;
  if (localStream && Camera.current) {
+  console.log("scan start");
    Scanning();
  }
  return () => {
@@ -58,24 +61,31 @@ useEffect(() => {
  }
 }, [localStream]);
 const req = useRef<any>();
-const Scanning = async () => {
- // const t = await Scan.decodeOnce();
+const Scanning = () => {
+//  const t = await Scan.decodeOnce();
  console.log('scan');
  if (localStream && Camera.current) {
+  console.log('scan true');
    try {
-     const data = await Scan.decodeFromStream(localStream, Camera.current, (data, err) => {
+     const scanData = Scan.decodeFromStream(localStream, Camera.current, (data, err) => {
        if (data) {
-         setText(data.getText());
-         // Scan.stopContinuousDecode();
+          setBarcodeValue(data.getText());
+          // Scan.stopContinuousDecode();
+          
+          for (var i = 0; i < bookList.length; i++) {
+            if (bookList[i].barcode == data.getText()) {
+              console.log('FindBook() name: ' + (bookList[i].name));
+              setbookName(bookList[i].name);
+            }
+          }
        } else {
-         setText("");
+        //  setText("");
        }
      });
    } catch (error) {
      console.log(error);
    }
  }
-
 }
 const Stop = () => {
  if (localStream) {
@@ -85,38 +95,13 @@ const Stop = () => {
    });
  }
 }
-const [text, setText] = useState('')
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div>
-    <video
-     ref={Camera}
-     id="video"
-   />
-      <input type="text" /><br />
-      <input type="text" />
-      
-      {/* <p>테스트</p>
-      {data ? (
-        <>
-          <ul>
-            {data.map((v, index) => {
-              return (
-                <React.Fragment key={index}>
-                  <li>{"id : " + v.id}</li>
-                  <li>{"barcode : " + v.barcode}</li>
-                  <li>{"name : " + v.name}</li>
-                </React.Fragment>
-              );
-            })}
-          </ul>
-        </>
-      ) : (
-        <div>
-          <p>불러오는중…</p>
-        </div>
-      )} */}
+    <video id="video" ref={Camera} />
+      <input type="text" defaultValue={barcodeValue}/><br />
+      <input type="text" defaultValue={bookName} />
     </div>
     </main>
   );
