@@ -1,9 +1,11 @@
 "use client";
 import Papa from "papaparse";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType } from '@zxing/library';
 
 const TARGETURL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU5hdzkntwQGD8AbxGZ9bgfYIoep9GxVx3RXYyJS4QJYG6GX9NKXGQomZE5lY4Xny8JiKPG55mGcS2/pub?output=csv";
+
 
 interface SheetType {
   id: number | string;
@@ -24,9 +26,78 @@ export default function Sheet() {
     });
   }, []);
 
+  
+const [localStream, setLocalStream] = useState<MediaStream>();
+const Camera = useRef<HTMLVideoElement>(null);
+const hints = new Map();
+const formats = [BarcodeFormat.QR_CODE, BarcodeFormat.DATA_MATRIX, BarcodeFormat.CODE_128, BarcodeFormat.CODABAR, BarcodeFormat.EAN_13, BarcodeFormat.EAN_8, BarcodeFormat.CODE_39, BarcodeFormat.CODE_93];
+hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
+const Scan = new BrowserMultiFormatReader(hints, 500);
+
+useEffect(() => {
+ navigator.mediaDevices.getUserMedia({
+  //  video: { facingMode: "user" }, //전면
+   video: { facingMode: { exact: "environment" } }, //후면
+ })
+   .then(stream => {
+     console.log(stream);
+     setLocalStream(stream);
+   })
+ return () => {
+   Stop();
+ }
+}, []);
+useEffect(() => {
+ if (!Camera.current)
+   return;
+ if (localStream && Camera.current) {
+   Scanning();
+ }
+ return () => {
+   Stop();
+ }
+}, [localStream]);
+const req = useRef<any>();
+const Scanning = async () => {
+ // const t = await Scan.decodeOnce();
+ console.log('scan');
+ if (localStream && Camera.current) {
+   try {
+     const data = await Scan.decodeFromStream(localStream, Camera.current, (data, err) => {
+       if (data) {
+         setText(data.getText());
+         // Scan.stopContinuousDecode();
+       } else {
+         setText("");
+       }
+     });
+   } catch (error) {
+     console.log(error);
+   }
+ }
+
+}
+const Stop = () => {
+ if (localStream) {
+   const vidTrack = localStream.getVideoTracks();
+   vidTrack.forEach(track => {
+     localStream.removeTrack(track);
+   });
+ }
+}
+const [text, setText] = useState('')
+
   return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div>
-      <p>테스트</p>
+    <video
+     ref={Camera}
+     id="video"
+   />
+      <input type="text" /><br />
+      <input type="text" />
+      
+      {/* <p>테스트</p>
       {data ? (
         <>
           <ul>
@@ -45,8 +116,9 @@ export default function Sheet() {
         <div>
           <p>불러오는중…</p>
         </div>
-      )}
+      )} */}
     </div>
+    </main>
   );
 }
 
