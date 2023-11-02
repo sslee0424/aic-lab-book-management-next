@@ -36,8 +36,8 @@ useEffect(() => {
       console.log("results.data", results.data);
 
       navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" }, //전면 카메라
-      //  video: { facingMode: { exact: "environment" } }, //후면 카메라
+        // video: { facingMode: "user" }, //전면 카메라
+       video: { facingMode: { exact: "environment" } }, //후면 카메라
       }).then(stream => {
           console.log(stream);
           setLocalStream(stream);
