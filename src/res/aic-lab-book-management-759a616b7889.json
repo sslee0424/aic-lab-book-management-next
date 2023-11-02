@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "aic-lab-book-management",
+  "private_key_id": "759a616b78897a6b2130a66e4ffafbc7da23f4b2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1lJWZPyUTJFA9\nxOavtlSxvWUobxp4Ub+7TOnwol2wKaAga5aiqlQwJ8LnWombdF3xmarqHkVfmLNl\nFwrGkkDzLsFcz+mF1PtRXWZItFm4oyoYwDBKE4G7rugYe0L2cExN0RAzUlEvP05o\nF1bIdwrBGvwliivJa2bieTjjQ0fYGsIDwdfLMtWysfGpPjKMpPtut+PVUtxrmbeS\nxKtdYS4Xei+9mE3wuLeseWvLfDC/DyGY4/RAfTZ0QSHPKIDKfaPH0gVduNuExbSd\njkwT+wmaJNExe80eQv1OwC1ceffegz8VQPQ/IrbCdxNe5SlfgFi7l/d0383OLcfe\nQnqMxNyBAgMBAAECggEACA+VcBEL7ux75PAYqxiBrEXLh7bd8pUzeSfGE2UL2nIQ\nnhvUmzpLRDuBpSZhaT2qXXs8SYooO4EShrR2CaBswnbzBdEjjWnJ8d/e9m+OM5qH\nuANRKXqx9dBjFJIlQ/4yfvpe2R5ohPvPGeMeWsYhG7c8VhjLDpUmYzutLTabigH7\n6TDcHhuiWCmDoL+4msXCA8iqaZ3bKIxAeAuHY13nrfn8mP77HdnVUPiPArvo7/FH\nGaChicqOgktaEp0G1CWrl84xCdOVBpL9JLyEtbaXY79h4voqksKoBvMbs0uXXRKn\no4Pm1bcwgtJxePU8gSaWtiE0UWhanwmy0iCh7wUzKQKBgQDlClejckiQct4E264U\nDRbomeVQ/vy/FNYAZtvJNhTppw1aDrT7Vp8eMbp7pxnPCj1py70JnviKuJiWE00d\nAQvM4bhcZpb5Po8mm8hcxafL4Jdwcpx83VSfX1bl/csIy9FpswTGgcMEy0HLeJ9D\n98Hvpsqud3NwId6h2ruerasR2QKBgQDK9CIweoF0drEhwvv5+33yI4xIvuKRlYKi\nJgDjkg+Jxpvs8okT21xs38KO7gusTZNLmi9FqjXFaBnNbvc7sQbz57bLHY1P+Yyf\nyIri48j5vl4rcjdVXRREFBHbbIQtlmTpEV4OvATQKB0GOP0TVfB3vA8YpprKMrAa\n/0Y5Sz3O6QKBgQCBS2lVtzoHcRCsJWcLoqf//oBZTNhY9eYoq+f+mi0MCWWcJRk9\nmRSR8viWvSnwmpM4me7I85jSlopsjdDGQsTqj7GHV9J6OTqOTPq6hEnI6awTql90\njW0r2qIviymGeahpxsk3ViFFH4iw2BLwR3iPVNSt0Hi2ICiRreykEt2zYQKBgBCH\n1gkQ0V6FFGRll1SDMXz5fEGompe1D9DZO5VNnkpgjO69yoB9i4eqqhQuO3ErWGX+\nBv+rn3mWwxNCiIyqHKDdLLxaidoLv3J8SSO13fbJlK4BPZSMYkwxPksbCaEU8N8y\n9PBKTDIQMl0BY0uh4lY+URR27YCupD1usW+VO1GRAoGAPkvgU0YV5Y8qoaOvgEJC\nWeGrB+HVknNuJSmlNC/MnGfLAdSKDhea/JwQeeiQoUGiOQ/T8nWs4afTvbnBmsgm\nfD9AjyJw9Oka4baYu+vNbP+uYarnaco0TBtWsC41N2AZdFtqgRUBw6n08oIPUL0V\nnsLSaFENweyjoEj1yQWiusM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "aic-lab-management@aic-lab-book-management.iam.gserviceaccount.com",
+  "client_id": "101023129479375880611",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/aic-lab-management%40aic-lab-book-management.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

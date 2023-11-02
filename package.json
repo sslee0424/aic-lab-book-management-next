@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/google-spreadsheet": "^4.0.0",
     "@zxing/library": "^0.20.0",
+    "google-auth-library": "^8.9.0",
+    "google-spreadsheet": "^4.1.0",
+    "googleapis": "^128.0.0",
     "next": "14.0.1",
     "papaparse": "^5.4.1",
     "react": "^18",
