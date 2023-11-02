@@ -24,6 +24,7 @@ const hints = new Map();
 const formats = [BarcodeFormat.DATA_MATRIX, BarcodeFormat.CODE_128, BarcodeFormat.CODABAR, BarcodeFormat.EAN_13, BarcodeFormat.EAN_8, BarcodeFormat.CODE_39, BarcodeFormat.CODE_93];
 hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 const Scan = new BrowserMultiFormatReader(hints, 500);
+const [barcode, setBarcode] = useState('');
 const [bookData, setBookData] = useState<SheetType>();
 
 useEffect(() => {
@@ -35,8 +36,8 @@ useEffect(() => {
       console.log("results.data", results.data);
 
       navigator.mediaDevices.getUserMedia({
-        // video: { facingMode: "user" }, //전면 카메라
-       video: { facingMode: { exact: "environment" } }, //후면 카메라
+        video: { facingMode: "user" }, //전면 카메라
+      //  video: { facingMode: { exact: "environment" } }, //후면 카메라
       }).then(stream => {
           console.log(stream);
           setLocalStream(stream);
@@ -64,13 +65,18 @@ const Scanning = () => {
    try {
      const scanData = Scan.decodeFromStream(localStream, Camera.current, (data, err) => {
        if (data) {
+        setBarcode(data.getText());
           // Scan.stopContinuousDecode();
-          bookList.forEach((book) => {
-            if (book.barcode == data.getText()) {
-              console.log('FindBook() name: ' + (book.bName));
-              setBookData(book);
-            }
-          });
+          if (bookList.some((book) => book.barcode == data.getText())) {
+            bookList.forEach((book) => {
+              if (book.barcode == data.getText()) {
+                console.log('FindBook() name: ' + (book.bName));
+                setBookData(book);
+              }
+            });
+          } else {
+            setBookData(undefined);
+          }
        } else {
         //  setText("");
        }
@@ -93,7 +99,7 @@ const Stop = () => {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div>
     <video id="video" ref={Camera} />
-    <p>바코드: {bookData?.barcode || "-"}</p>
+    <p>바코드: {barcode || "-"}</p>
     <p>책이름: {bookData?.bName || "-"}</p>
     <p>상태: {bookData?.state || "-"}</p>
     <p>대여자: {bookData?.uName || "-"}</p>
